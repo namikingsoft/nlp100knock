@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+cabal test --test-options="--color"
