@@ -8,7 +8,7 @@ module My.Fib where
 -- 55
 --
 -- >>> fib 5
--- 5
+-- 55
 fib :: Int -> Int
 fib 0 = 0
 fib 1 = 1

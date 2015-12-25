@@ -1,5 +1,4 @@
 app:
   build: .
   volumes:
-    - ./src:/app/src
-    - ./test:/app/test
+    - .:/app

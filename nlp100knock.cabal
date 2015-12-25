@@ -31,6 +31,7 @@ test-suite doctest
   ghc-options:         -Wall -threaded
   build-depends:       base >=4.8 && <4.9
                      , doctest
+                     , process
 
 test-suite hspec
   type:                exitcode-stdio-1.0

@@ -1,6 +1,9 @@
 module Main where
 
 import Test.DocTest
+import System.Process
 
 main :: IO ()
-main = doctest ["src/My/Fib.hs"]
+main = do
+  files <- lines <$> readProcess "find" ["src", "-type", "f", "-name", "*.hs"] []
+  doctest $ [] ++ files

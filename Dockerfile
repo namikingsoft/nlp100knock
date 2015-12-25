@@ -15,11 +15,12 @@ RUN cd /tmp/app \
  && cabal install --only-dep --enable-test \
  && rm -rf /tmp/app
 COPY . /app
+RUN cd /app \
+ && cabal test
 
 # workdir
 WORKDIR /app
-VOLUME /app/src
-VOLUME /app/test
+VOLUME /app
 
 # entry point
 COPY docker-entrypoint.sh /
