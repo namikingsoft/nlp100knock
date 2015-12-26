@@ -58,11 +58,13 @@ knock03 n = headWordLengthStr n ++ "." ++ tailWordLengthStr n
 -- 連想配列（辞書型もしくはマップ型）を作成せよ．
 --
 knock04 :: String -> [(Int, String)]
-knock04 text = map trimAtomWord indexWords
+knock04 = map trimAtomWord . indexWordTuples
   where
-    words = splitWords text
-    wordNum = length words
-    indexWords = map (\x -> (x, words!!(x-1))) [1 .. wordNum]
+    indexWordTuples :: String -> [(Int, String)]
+    indexWordTuples s = map (\x -> (x, words!!(x-1))) [1 .. wordNum]
+      where
+        words = splitWords s
+        wordNum = length words
     trimAtomWord :: (Int, String) -> (Int, String)
     trimAtomWord (1, s) = (1, [head s])
     trimAtomWord (5, s) = (5, [head s])
@@ -72,5 +74,3 @@ knock04 text = map trimAtomWord indexWords
     trimAtomWord (15,s) = (15,[head s])
     trimAtomWord (16,s) = (16,[head s])
     trimAtomWord (n, s) = (n, [head s] ++ [(head . tail) s])
-
-
