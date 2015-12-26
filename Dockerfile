@@ -17,7 +17,8 @@ RUN cd /tmp/app \
  && rm -rf /tmp/app
 COPY . /app
 RUN cd /app \
- && stack test
+ && stack test \
+ && echo ':set prompt "\ESC[32m> \ESC[m"' > /root/.ghci
 
 # deploy by cabal
 #RUN cd /tmp/app \
