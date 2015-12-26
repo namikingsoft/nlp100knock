@@ -1,6 +1,7 @@
 module NLP100.Chapter01 where
 
 import NLP100.Chapter01.Internal
+import Data.List
 
 -- | 00. 文字列の逆順
 --
@@ -83,3 +84,18 @@ knock05 :: [a] -> [[a]]
 knock05 (x1:x2:[]) = [[x1]++[x2]]
 knock05 (x1:x2:xs) = [[x1]++[x2]] ++ (knock05 $ [x2]++xs)
 knock05 _ = [[]]
+
+-- | 06. 集合
+--
+-- "paraparaparadise"と"paragraph"に含まれる文字bi-gramの集合を，
+-- それぞれ, XとYとして求め，XとYの和集合，積集合，差集合を求めよ．
+-- さらに，'se'というbi-gramがXおよびYに含まれるかどうかを調べよ．
+--
+knock06union :: String -> String -> [String]
+knock06union s1 s2 = (nub . knock05) s1 `union` (nub . knock05) s2
+knock06intersect :: String -> String -> [String]
+knock06intersect s1 s2 = (nub . knock05) s1 `intersect` (nub . knock05) s2
+knock06difference :: String -> String -> [String]
+knock06difference s1 s2 = (nub . knock05) s1 \\ (nub . knock05) s2
+knock06contains :: String -> String -> Bool
+knock06contains s bi = (length $ filter (==bi) $ knock05 s) > 0
