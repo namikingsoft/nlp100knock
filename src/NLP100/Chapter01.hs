@@ -1,7 +1,6 @@
 module NLP100.Chapter01 where
 
 import NLP100.Chapter01.Internal
-import Debug.Trace
 
 -- | 00. 文字列の逆順
 --
@@ -61,10 +60,10 @@ knock04 :: String -> [(Int, String)]
 knock04 = map trimAtomWord . indexWordTuples
   where
     indexWordTuples :: String -> [(Int, String)]
-    indexWordTuples s = map (\x -> (x, words!!(x-1))) [1 .. wordNum]
+    indexWordTuples s = map (\x -> (x, wordList!!(x-1))) [1 .. wordNum]
       where
-        words = splitWords s
-        wordNum = length words
+        wordList = splitWords s
+        wordNum = length wordList
     trimAtomWord :: (Int, String) -> (Int, String)
     trimAtomWord (1, s) = (1, [head s])
     trimAtomWord (5, s) = (5, [head s])
