@@ -1,7 +1,9 @@
 #!/bin/bash -e
 
-cabal test --test-options="--color" \
-| perl -pe '
-  s/FAIL/\e[31;1m$&\e[m/g;
-  s/PASS/\e[32;1m$&\e[m/g;
-'
+#cabal test --test-options="--color" \
+#| perl -pe '
+#  s/FAIL/\e[31;1m$&\e[m/g;
+#  s/PASS/\e[32;1m$&\e[m/g;
+#'
+
+stack test --file-watch

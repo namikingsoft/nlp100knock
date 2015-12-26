@@ -1,26 +1,36 @@
 FROM haskell:7.10
 
 # update & install package
-RUN apt-get update -y \
- && apt-get install -y vim \
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 575159689BEFB442 \
+ && echo 'deb http://download.fpcomplete.com/debian jessie main' \
+    | tee /etc/apt/sources.list.d/fpco.list \
+ && apt-get update -y \
+ && apt-get install -y stack vim curl \
  && rm -rf /var/lib/apt/lists/*
 
-# environment
-ENV PATH=/app/bin:/root/.cabal/bin:$PATH
-
-# deploy
+# deploy by stack
 COPY nlp100knock.cabal /tmp/app/
+COPY stack.yaml /tmp/app/
 RUN cd /tmp/app \
- && cabal update \
- && cabal install --only-dep --enable-test \
+ && mkdir src && mkdir test \
+ && stack build --only-dependencies --test \
  && rm -rf /tmp/app
 COPY . /app
 RUN cd /app \
- && cabal test
+ && stack test
 
-# workdir
+# deploy by cabal
+#RUN cd /tmp/app \
+# && cabal update \
+# && cabal install --only-dep --enable-test \
+# && rm -rf /tmp/app
+#COPY . /app
+#RUN cd /app \
+# && cabal test
+
+# setting
 WORKDIR /app
-VOLUME /app
+ENV PATH=/app/bin:/root/.local/bin:/root/.cabal/bin:$PATH
 
 # entry point
 COPY docker-entrypoint.sh /

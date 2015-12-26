@@ -1,4 +1,6 @@
 app:
   build: .
   volumes:
-    - .:/app
+    - ./src:/app/src
+    - ./test:/app/test
+    - ./nlp100knock.cabal:/app/nlp100knock.cabal
