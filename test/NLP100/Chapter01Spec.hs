@@ -20,3 +20,10 @@ spec = do
 
       it "should return correct value" $ do
         knock01 "パタトクカシーー" `shouldBe` "パトカー"
+
+    describe "02. 「パトカー」＋「タクシー」＝「パタトクカシーー」" $ do
+      -- パトカー」＋「タクシー」の文字を先頭から交互に連結して
+      -- 文字列「パタトクカシーー」を得よ．
+
+      it "should return correct value" $ do
+        knock02 "パトカー" "タクシー" `shouldBe` "パタトクカシーー"
