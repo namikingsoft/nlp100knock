@@ -22,6 +22,9 @@ library
   hs-source-dirs:      src
   ghc-options:         -Wall
   build-depends:       base >=4.8 && <4.9
+                     , split ==0.2.2
+                     , regex-posix ==0.95.2
+                     , regex-compat ==0.95.1
 
 test-suite hspec
   type:                exitcode-stdio-1.0

@@ -27,3 +27,16 @@ spec = do
 
       it "should return correct value" $ do
         knock02 "パトカー" "タクシー" `shouldBe` "パタトクカシーー"
+
+    describe "03. 円周率" $ do
+      -- Now I need a drink, alcoholic of course,
+      -- after the heavy lectures involving quantum mechanics.
+      --
+      -- という文を単語に分解し，各単語の（アルファベットの）文字数を
+      -- 先頭から出現順に並べたリストを作成せよ．
+
+      it "should return correct value" $ do
+        knock03 sentence `shouldBe` "3.14159265358979"
+          where sentence = row1 ++ row2
+                row1 = "Now I need a drink, alcoholic of course, "
+                row2 = "after the heavy lectures involving quantum mechanics."
