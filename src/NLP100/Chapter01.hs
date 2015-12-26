@@ -2,6 +2,7 @@ module NLP100.Chapter01 where
 
 import NLP100.Chapter01.Internal
 import Data.List
+import Text.Printf
 
 -- | 00. 文字列の逆順
 --
@@ -99,3 +100,10 @@ knock06difference :: String -> String -> [String]
 knock06difference s1 s2 = (nub . knock05) s1 \\ (nub . knock05) s2
 knock06contains :: String -> String -> Bool
 knock06contains s bi = (length $ filter (==bi) $ knock05 s) > 0
+
+-- | 07. テンプレートによる文生成
+--
+-- 引数x, y, zを受け取り「x時のyはz」という文字列を返す関数を実装せよ．
+-- さらに，x=12, y="気温", z=22.4として，実行結果を確認せよ．
+knock07 :: Int -> String -> Float -> String
+knock07 x y z = printf "%d時の%sは%f" x y z
