@@ -1,6 +1,7 @@
 module NLP100.Chapter01Spec where
 
 import NLP100.Chapter01
+import NLP100.Chapter01.Internal
 import Test.Hspec
 
 spec :: Spec
@@ -62,4 +63,19 @@ spec = do
           (1,"H"),(2,"He"),(3,"Li"),(4,"Be"),(5,"B"),(6,"C"),(7,"N"),
           (8,"Ox"),(9,"F"),(10,"Ne"),(11,"Na"),(12,"Mi"),(13,"Al"),(14,"Si"),
           (15,"P"),(16,"S"),(17,"Cl"),(18,"Ar"),(19,"Ki"),(20,"Ca")
-          ]
+                                    ]
+
+    describe "05. n-gram" $ do
+      -- 与えられたシーケンス（文字列やリストなど）からn-gramを作る関数を作成せよ．
+      -- この関数を用い，"I am an NLPer"という文から単語bi-gram，文字bi-gramを得よ．
+
+      it "should return correct value" $ do
+        let
+          text = "I am an NLPer"
+          words = splitWords text
+        knock05 text `shouldBe` [
+          "I "," a", "am","m "," a","an","n "," N","NL","LP","Pe","er"
+                                ]
+        knock05 words `shouldBe` [
+          ["I","am"],["am","an"],["an","NLPer"]
+                                 ]

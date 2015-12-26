@@ -74,3 +74,13 @@ knock04 = map trimAtomWord . indexWordTuples
     trimAtomWord (15,s) = (15,[head s])
     trimAtomWord (16,s) = (16,[head s])
     trimAtomWord (n, s) = (n, [head s] ++ [(head . tail) s])
+
+-- | 05. n-gram
+--
+-- 与えられたシーケンス（文字列やリストなど）からn-gramを作る関数を作成せよ．
+-- この関数を用い，"I am an NLPer"という文から単語bi-gram，文字bi-gramを得よ．
+--
+knock05 :: [a] -> [[a]]
+knock05 (x1:x2:[]) = [[x1]++[x2]]
+knock05 (x1:x2:xs) = [[x1]++[x2]] ++ (knock05 $ [x2]++xs)
+knock05 _ = [[]]
