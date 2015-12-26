@@ -3,4 +3,5 @@ app:
   volumes:
     - ./src:/app/src
     - ./test:/app/test
+    - ./stack.yaml:/app/stack.yaml
     - ./nlp100knock.cabal:/app/nlp100knock.cabal
