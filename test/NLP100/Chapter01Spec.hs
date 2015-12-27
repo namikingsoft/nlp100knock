@@ -109,5 +109,5 @@ spec = do
       --
       -- この関数を用い，英語のメッセージを暗号化・復号化せよ．
       it "should return correct value" $ do
-        knock08encode "Test08" `shouldBe` "Tvhg08"
-        knock08decode "Tvhg08" `shouldBe` "Test08"
+        knock08encode "Test08-`Z`" `shouldBe` "Tvhg08-`Z`"
+        knock08decode "Tvhg08-`Z`" `shouldBe` "Test08-`Z`"
