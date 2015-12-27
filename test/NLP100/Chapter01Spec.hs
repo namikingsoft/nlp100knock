@@ -1,7 +1,6 @@
 module NLP100.Chapter01Spec where
 
 import NLP100.Chapter01
-import NLP100.Chapter01.Internal
 import Test.Hspec
 
 spec :: Spec

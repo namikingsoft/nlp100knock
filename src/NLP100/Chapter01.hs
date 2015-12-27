@@ -1,12 +1,20 @@
 module NLP100.Chapter01 where
 
-import NLP100.Chapter01.Internal
 import Data.Char
 import Data.List
 import Data.List.Split
+import Text.Regex
 import Text.Printf
 import System.Random
 import Debug.Trace
+
+-- | Utility
+--
+splitWords :: String -> [String]
+splitWords = splitOn " " . onlyWord
+  where
+    onlyWord :: String -> String
+    onlyWord n = subRegex (mkRegex "[,\\.]") n ""
 
 -- | 00. 文字列の逆順
 --
@@ -44,12 +52,12 @@ knock02 (x:xs) (y:ys) = [x] ++ [y] ++ knock02 xs ys
 knock03 :: String -> String
 knock03 n = headWordLengthStr n ++ "." ++ tailWordLengthStr n
   where
-    wordLengthes :: String -> [Int]
-    wordLengthes = map length . splitWords
     headWordLengthStr :: String -> String
     headWordLengthStr = show . head . wordLengthes
     tailWordLengthStr :: String -> String
     tailWordLengthStr = concat . map show . tail . wordLengthes
+    wordLengthes :: String -> [Int]
+    wordLengthes = map length . splitWords
 
 -- | 04. 元素記号
 --
@@ -68,8 +76,8 @@ knock04 = map trimAtomWord . indexWordTuples
     indexWordTuples :: String -> [(Int, String)]
     indexWordTuples s = map (\x -> (x, wordList!!(x-1))) [1 .. wordNum]
       where
-        wordList = splitWords s
         wordNum = length wordList
+        wordList = splitWords s
     trimAtomWord :: (Int, String) -> (Int, String)
     trimAtomWord (1, s) = (1, [head s])
     trimAtomWord (5, s) = (5, [head s])
