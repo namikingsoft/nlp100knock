@@ -2,7 +2,9 @@ module NLP100.Chapter01 where
 
 import NLP100.Chapter01.Internal
 import Data.List
+import Data.Char
 import Text.Printf
+import Debug.Trace
 
 -- | 00. 文字列の逆順
 --
@@ -107,3 +109,32 @@ knock06contains s bi = (length $ filter (==bi) $ knock05 s) > 0
 -- さらに，x=12, y="気温", z=22.4として，実行結果を確認せよ．
 knock07 :: Int -> String -> Float -> String
 knock07 x y z = printf "%d時の%sは%f" x y z
+
+
+-- | 08. 暗号文
+--
+-- 与えられた文字列の各文字を，以下の仕様で変換する関数cipherを実装せよ．
+--
+-- ・英小文字ならば(219 - 文字コード)の文字に置換
+-- ・その他の文字はそのまま出力
+--
+-- この関数を用い，英語のメッセージを暗号化・復号化せよ．
+--
+knock08encode :: String -> String
+knock08encode s = map encode s
+  where
+    encode :: Char -> Char
+    encode c
+      | 0x61 < i && i < 0x7a = chr $ 219 - i
+      | otherwise = c
+      where
+        i = ord c
+knock08decode :: String -> String
+knock08decode s = map decode s
+  where
+    decode :: Char -> Char
+    decode c
+      | 0x61 < i && i < 0x7a = chr i
+      | otherwise = c
+      where
+        i = 219 - ord c

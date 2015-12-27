@@ -100,3 +100,14 @@ spec = do
       -- さらに，x=12, y="気温", z=22.4として，実行結果を確認せよ．
       it "should return correct value" $ do
         knock07 12 "気温" 22.4 `shouldBe` "12時の気温は22.4"
+
+    describe "08. 暗号文" $ do
+      -- 与えられた文字列の各文字を，以下の仕様で変換する関数cipherを実装せよ．
+      --
+      -- ・英小文字ならば(219 - 文字コード)の文字に置換
+      -- ・その他の文字はそのまま出力
+      --
+      -- この関数を用い，英語のメッセージを暗号化・復号化せよ．
+      it "should return correct value" $ do
+        knock08encode "Test08" `shouldBe` "Tvhg08"
+        knock08decode "Tvhg08" `shouldBe` "Test08"
