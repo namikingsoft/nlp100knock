@@ -3,8 +3,8 @@
 
 name:                  nlp100knock
 version:               0.1.0.0
-synopsis:              NLP 100 knock
-description:           NLP 100 knock
+synopsis:              Resolve NLP 100 knock using Haskell
+description:           http://www.cl.ecei.tohoku.ac.jp/nlp100/
 license:               MIT
 license-file:          LICENSE
 author:                Tsubasa Namiki
