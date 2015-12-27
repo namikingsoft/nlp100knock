@@ -111,3 +111,22 @@ spec = do
       it "should return correct value" $ do
         knock08encode "Test08-`Z`" `shouldBe` "Tvhg08-`Z`"
         knock08decode "Tvhg08-`Z`" `shouldBe` "Test08-`Z`"
+
+    describe "09. Typoglycemia" $ do
+      -- スペースで区切られた単語列に対して，各単語の先頭と末尾の文字は残し，
+      -- それ以外の文字の順序をランダムに並び替えるプログラムを作成せよ．
+      -- ただし，長さが４以下の単語は並び替えないこととする．
+      --
+      -- I couldn't believe that I could actually understand what
+      -- I was reading : the phenomenal power of the human mind .
+      --
+      -- を与え，その実行結果を確認せよ．
+      it "should return correct value" $ do
+        let
+          row1 = "I couldn't believe that I could actually understand what "
+          row2 = "I was reading : the phenomenal power of the human mind ."
+          sentence = row1 ++ row2
+          row3 = "I col'ndut blveiee that I cluod acullaty uesnatrdnd what "
+          row4 = "I was ranideg : the pnmaneoehl pewor of the hamun mind ."
+          answer = row3 ++ row4
+        knock09 sentence `shouldBe` answer

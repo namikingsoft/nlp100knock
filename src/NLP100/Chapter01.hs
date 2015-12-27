@@ -1,9 +1,11 @@
 module NLP100.Chapter01 where
 
 import NLP100.Chapter01.Internal
-import Data.List
 import Data.Char
+import Data.List
+import Data.List.Split
 import Text.Printf
+import System.Random
 import Debug.Trace
 
 -- | 00. 文字列の逆順
@@ -138,3 +140,35 @@ knock08decode s = map decode s
       | otherwise = c
       where
         i = 219 - ord c
+
+-- | 09. Typoglycemia
+--
+-- スペースで区切られた単語列に対して，各単語の先頭と末尾の文字は残し，
+-- それ以外の文字の順序をランダムに並び替えるプログラムを作成せよ．
+-- ただし，長さが４以下の単語は並び替えないこととする．
+--
+-- I couldn't believe that I could actually understand what
+-- I was reading : the phenomenal power of the human mind .
+--
+-- を与え，その実行結果を確認せよ．
+--
+knock09 :: String -> String
+knock09 = joinWord . map typoglycemia . splitWord
+  where
+    splitWord :: String -> [String]
+    splitWord = splitOn " "
+    joinWord :: [String] -> String
+    joinWord = intercalate " "
+    typoglycemia :: String -> String
+    typoglycemia s
+      | length s <= 4 = s
+      | otherwise = [head s] ++ (shuffle.init.tail) s ++ [last s]
+      where
+        shuffle :: [a] -> [a]
+        shuffle [] = []
+        shuffle (x:xs)
+          | randomBool $ length xs = shuffle xs ++ [x]
+          | otherwise = [x] ++ shuffle xs
+          where
+            randomBool :: Int -> Bool
+            randomBool n = (randoms (mkStdGen 1234) :: [Bool]) !! n
