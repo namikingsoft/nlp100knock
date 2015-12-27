@@ -34,8 +34,8 @@ test-suite hspec
   hs-source-dirs:      test
   ghc-options:         -Wall
   build-depends:       base >=4.8 && <4.9
-                     , hspec
-                     , QuickCheck
+                     , hspec ==2.1.10
+                     , QuickCheck ==2.8.1
                      , nlp100knock
 
 --test-suite doctest
