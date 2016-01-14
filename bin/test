@@ -6,4 +6,8 @@
 #  s/PASS/\e[32;1m$&\e[m/g;
 #'
 
-stack test --file-watch
+# normal
+#stack test --file-watch
+
+# shared folder on virtualbox
+stack test --file-watch-poll
