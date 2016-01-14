@@ -5,18 +5,21 @@ import Test.Hspec
 import System.Process
 
 exec :: String -> IO String
-exec cmd = do
-  result <- readProcess "sh" ["-c", cmd] []
-  return $ rstrip result
+exec cmd = readProcess "sh" ["-c", cmd] []
+
+exectrim :: String -> IO String
+exectrim cmd = do
+  result <- exec cmd
+  return $ trim result
     where
-      lstrip :: String -> String
-      lstrip [] = []
-      lstrip xs'@(x:xs)
-        | x == ' '  = lstrip xs
-        | x == '\n' = lstrip xs
+      ltrim :: String -> String
+      ltrim [] = []
+      ltrim xs'@(x:xs)
+        | x == ' '  = ltrim xs
+        | x == '\n' = ltrim xs
         | otherwise = xs'
-      rstrip = reverse . lstrip . reverse
-      strip = lstrip . rstrip
+      rtrim = reverse . ltrim . reverse
+      trim = ltrim . rtrim
 
 spec :: Spec
 spec = do
@@ -31,5 +34,13 @@ spec = do
       -- 行数をカウントせよ．確認にはwcコマンドを用いよ．
       it "should return correct value" $ do
         result1 <- knock10 "data/hightemp.txt"
-        result2 <- exec "wc data/hightemp.txt | awk '{print $1}'"
+        result2 <- exectrim "wc data/hightemp.txt | awk '{print $1}'"
         show result1 `shouldBe` result2
+
+    describe "11. タブをスペースに置換" $ do
+      -- タブ1文字につきスペース1文字に置換せよ．
+      -- 確認にはsedコマンド，trコマンド，もしくはexpandコマンドを用いよ．
+      it "should return correct value" $ do
+        result1 <- knock11 "data/hightemp.txt"
+        result2 <- exec "cat data/hightemp.txt | tr '\t' ' '"
+        result1 `shouldBe` result2
