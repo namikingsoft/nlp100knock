@@ -33,7 +33,7 @@ knock11 path = do
 -- 2列目だけを抜き出したものをcol2.txtとしてファイルに保存せよ．
 -- 確認にはcutコマンドを用いよ．
 --
-knock12 :: FilePath -> IO String
+knock12 :: FilePath -> IO ()
 knock12 path = do
   text <- readFile path
   let lines = parseTsv text
@@ -41,16 +41,14 @@ knock12 path = do
   let file2 = foldl (\x y -> x ++ y ++ "\n") "" $ map (\x -> x!!1) lines
   writeFile "/tmp/col1.txt" file1
   writeFile "/tmp/col2.txt" file2
-  return  ""
     where
       parseTsv :: String -> [[String]]
       parseTsv x = case (parse tsv "error" x) of
         Right x -> x
-        Left x -> [[]]
+        Left x -> error "Parse Error"
         where
           tsv = endBy line break
           line = sepBy col tab
           col = many1 $ noneOf "\t\n"
           tab = char '\t'
           break = char '\n'
-
