@@ -51,10 +51,20 @@ spec = do
       -- 2列目だけを抜き出したものをcol2.txtとしてファイルに保存せよ．
       -- 確認にはcutコマンドを用いよ．
       it "should return correct value" $ do
-        knock12 "data/hightemp.txt"
+        knock12 "data/hightemp.txt" "/tmp/col1.txt" "/tmp/col2.txt"
         result1 <- readFile "/tmp/col1.txt"
         result2 <- readFile "/tmp/col2.txt"
-        col1 <- exec "cut -f1 data/hightemp.txt"
-        col2 <- exec "cut -f2 data/hightemp.txt"
+        col1 <- exectrim "cut -f1 data/hightemp.txt"
+        col2 <- exectrim "cut -f2 data/hightemp.txt"
         result1 `shouldBe` col1
         result2 `shouldBe` col2
+
+    describe "13. col1.txtとcol2.txtをマージ" $ do
+      -- 12で作ったcol1.txtとcol2.txtを結合し，元のファイルの
+      -- 1列目と2列目をタブ区切りで並べたテキストファイルを作成せよ．
+      -- 確認にはpasteコマンドを用いよ．
+      it "should return correct value" $ do
+        knock13 "/tmp/merge.txt" "/tmp/col1.txt" "/tmp/col2.txt"
+        result <- readFile "/tmp/merge.txt"
+        answer <- exectrim "paste -d'\t' /tmp/col1.txt /tmp/col2.txt"
+        result `shouldBe` answer

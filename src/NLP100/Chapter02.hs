@@ -1,5 +1,6 @@
 module NLP100.Chapter02 where
 
+import Data.List.Split (splitOn)
 import Text.Parsec
 import Debug.Trace
 
@@ -33,22 +34,40 @@ knock11 path = do
 -- 2列目だけを抜き出したものをcol2.txtとしてファイルに保存せよ．
 -- 確認にはcutコマンドを用いよ．
 --
-knock12 :: FilePath -> IO ()
-knock12 path = do
+knock12 :: FilePath -> FilePath -> FilePath -> IO ()
+knock12 path col1path col2path = do
   text <- readFile path
   let lines = parseTsv text
-  let file1 = foldl (\x y -> x ++ y ++ "\n") "" $ map (\x -> x!!0) lines
-  let file2 = foldl (\x y -> x ++ y ++ "\n") "" $ map (\x -> x!!1) lines
-  writeFile "/tmp/col1.txt" file1
-  writeFile "/tmp/col2.txt" file2
+      col1text = init $ foldl (\x y -> x ++ y ++ "\n") "" $ map (\x -> x!!0) lines
+      col2text = init $ foldl (\x y -> x ++ y ++ "\n") "" $ map (\x -> x!!1) lines
+  writeFile col1path col1text
+  writeFile col2path col2text
     where
       parseTsv :: String -> [[String]]
-      parseTsv x = case (parse tsv "error" x) of
+      parseTsv x = case (parse tsv "Parse Error" x) of
         Right x -> x
-        Left x -> error "Parse Error"
+        Left x -> error $ show x
         where
           tsv = endBy line break
           line = sepBy col tab
           col = many1 $ noneOf "\t\n"
           tab = char '\t'
           break = char '\n'
+
+-- | 13. col1.txtとcol2.txtをマージ
+--
+-- 12で作ったcol1.txtとcol2.txtを結合し，元のファイルの
+-- 1列目と2列目をタブ区切りで並べたテキストファイルを作成せよ．
+-- 確認にはpasteコマンドを用いよ．
+knock13 :: FilePath -> FilePath -> FilePath -> IO ()
+knock13 path col1path col2path = do
+  col1text <- readFile col1path
+  col2text <- readFile col2path
+  let col1rows = splitBreak col1text
+      col2rows = splitBreak col2text
+      indexes = [0 .. (length col1rows - 1)]
+      mergeRows = map (\x -> col1rows!!x ++ "\t" ++ col2rows!!x) indexes
+      mergeText = init $ foldl (\x y -> x ++ y ++ "\n") "" mergeRows
+  writeFile path mergeText
+    where
+      splitBreak = splitOn "\n"
