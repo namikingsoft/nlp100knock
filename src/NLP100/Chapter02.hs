@@ -1,6 +1,9 @@
 module NLP100.Chapter02 where
 
 import Text.Regex
+import Text.Regex.Posix
+import Text.Parsec
+import Debug.Trace
 
 -- | 10. 行数のカウント
 --
@@ -22,3 +25,31 @@ knock11 path = do
   return $ tab2space text
     where
       tab2space x = subRegex (mkRegex "[\t]") x " "
+
+-- | 12. 1列目をcol1.txtに，2列目をcol2.txtに保存
+--
+-- 各行の1列目だけを抜き出したものをcol1.txtに，
+-- 2列目だけを抜き出したものをcol2.txtとしてファイルに保存せよ．
+-- 確認にはcutコマンドを用いよ．
+--
+knock12 :: FilePath -> IO String
+knock12 path = do
+  text <- readFile path
+  let lines = parseTsv text
+  let file1 = foldl (\x y -> x ++ y ++ "\n") "" $ map (\x -> x!!0) lines
+  let file2 = foldl (\x y -> x ++ y ++ "\n") "" $ map (\x -> x!!1) lines
+  writeFile "/tmp/col1.txt" file1
+  writeFile "/tmp/col2.txt" file2
+  return  ""
+    where
+      parseTsv :: String -> [[String]]
+      parseTsv x = case (parse hightemp "error" x) of
+        Right x -> x
+        Left x -> [[]]
+        where
+          hightemp = endBy line break
+          line = sepBy col tab
+          col = many1 $ noneOf "\t\n"
+          tab = char '\t'
+          break = char '\n'
+

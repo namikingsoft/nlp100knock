@@ -26,6 +26,7 @@ library
                      , split ==0.2.2
                      , regex-posix ==0.95.2
                      , regex-compat ==0.95.1
+                     , parsec ==3.1.9
                      , random ==1.1
 
 test-suite hspec
