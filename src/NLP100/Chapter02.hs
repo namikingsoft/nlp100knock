@@ -43,11 +43,11 @@ knock12 path = do
   return  ""
     where
       parseTsv :: String -> [[String]]
-      parseTsv x = case (parse hightemp "error" x) of
+      parseTsv x = case (parse tsv "error" x) of
         Right x -> x
         Left x -> [[]]
         where
-          hightemp = endBy line break
+          tsv = endBy line break
           line = sepBy col tab
           col = many1 $ noneOf "\t\n"
           tab = char '\t'
