@@ -1,7 +1,5 @@
 module NLP100.Chapter02 where
 
-import Text.Regex
-import Text.Regex.Posix
 import Text.Parsec
 import Debug.Trace
 
@@ -24,7 +22,10 @@ knock11 path = do
   text <- readFile path
   return $ tab2space text
     where
-      tab2space x = subRegex (mkRegex "[\t]") x " "
+      tab2space :: String -> String
+      tab2space [] = ""
+      tab2space ('\t':xs) = [' '] ++ tab2space xs
+      tab2space (x:xs) = [x] ++ tab2space xs
 
 -- | 12. 1列目をcol1.txtに，2列目をcol2.txtに保存
 --
