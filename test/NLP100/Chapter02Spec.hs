@@ -79,3 +79,14 @@ spec = do
         result2 <- knock14 "data/hightemp.txt" 5
         answer2 <- exectrim "head -n5 data/hightemp.txt"
         result2 `shouldBe` answer2
+
+    describe "15. 末尾のN行を出力" $ do
+      -- 自然数Nをコマンドライン引数などの手段で受け取り，
+      -- 入力のうち末尾のN行だけを表示せよ．確認にはtailコマンドを用いよ．
+      it "should return correct value" $ do
+        result1 <- knock15 "data/hightemp.txt" 4
+        answer1 <- exectrim "tail -n4 data/hightemp.txt"
+        result1 `shouldBe` answer1
+        result2 <- knock15 "data/hightemp.txt" 5
+        answer2 <- exectrim "tail -n5 data/hightemp.txt"
+        result2 `shouldBe` answer2

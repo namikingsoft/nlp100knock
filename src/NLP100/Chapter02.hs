@@ -4,6 +4,23 @@ import Data.List.Split (splitOn)
 import Text.Parsec
 import Debug.Trace
 
+-- | Utility
+--
+joinOnLF :: [String] -> String
+joinOnLF = init . foldl (\x y -> x ++ y ++ "\n") ""
+splitOnLF :: String -> [String]
+splitOnLF = splitOn "\n"
+ltrim :: String -> String
+ltrim [] = []
+ltrim xs'@(x:xs)
+  | x == ' '  = ltrim xs
+  | x == '\n' = ltrim xs
+  | otherwise = xs'
+rtrim :: String -> String
+rtrim = reverse . ltrim . reverse
+trim :: String -> String
+trim = ltrim . rtrim
+
 -- | 10. 行数のカウント
 --
 -- 行数をカウントせよ．確認にはwcコマンドを用いよ．
@@ -38,8 +55,8 @@ knock12 :: FilePath -> FilePath -> FilePath -> IO ()
 knock12 path col1path col2path = do
   text <- readFile path
   let lines = parseTsv text
-      col1text = init $ foldl (\x y -> x ++ y ++ "\n") "" $ map (\x -> x!!0) lines
-      col2text = init $ foldl (\x y -> x ++ y ++ "\n") "" $ map (\x -> x!!1) lines
+      col1text = joinOnLF $ map (\x -> x!!0) lines
+      col2text = joinOnLF $ map (\x -> x!!1) lines
   writeFile col1path col1text
   writeFile col2path col2text
     where
@@ -63,14 +80,12 @@ knock13 :: FilePath -> FilePath -> FilePath -> IO ()
 knock13 path col1path col2path = do
   col1text <- readFile col1path
   col2text <- readFile col2path
-  let col1rows = splitBreak col1text
-      col2rows = splitBreak col2text
+  let col1rows = splitOnLF col1text
+      col2rows = splitOnLF col2text
       indexes = [0 .. (length col1rows - 1)]
       mergeRows = map (\x -> col1rows!!x ++ "\t" ++ col2rows!!x) indexes
-      mergeText = init $ foldl (\x y -> x ++ y ++ "\n") "" mergeRows
+      mergeText = joinOnLF mergeRows
   writeFile path mergeText
-    where
-      splitBreak = splitOn "\n"
 
 -- | 14. 先頭からN行を出力
 --
@@ -80,6 +95,19 @@ knock13 path col1path col2path = do
 knock14 :: FilePath -> Int -> IO String
 knock14 path n = do
   text <- readFile path
-  return $ init $ foldl (\x y -> x ++ y ++ "\n") "" $ take n $ splitBreak text
+  return $ head text
     where
-      splitBreak = splitOn "\n"
+      head = joinOnLF . take n . splitOnLF . trim
+
+-- | 15. 末尾のN行を出力
+--
+-- 自然数Nをコマンドライン引数などの手段で受け取り，
+-- 入力のうち末尾のN行だけを表示せよ．確認にはtailコマンドを用いよ．
+--
+knock15 :: FilePath -> Int -> IO String
+knock15 path n = do
+  text <- readFile path
+  return $ tail text
+    where
+      tail = joinOnLF . reverse . take n . reverse . splitOnLF . trim
+
