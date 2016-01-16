@@ -68,3 +68,14 @@ spec = do
         result <- readFile "/tmp/merge.txt"
         answer <- exectrim "paste -d'\t' /tmp/col1.txt /tmp/col2.txt"
         result `shouldBe` answer
+
+    describe "14. 先頭からN行を出力" $ do
+      -- 自然数Nをコマンドライン引数などの手段で受け取り，
+      -- 入力のうち先頭のN行だけを表示せよ．確認にはheadコマンドを用いよ．
+      it "should return correct value" $ do
+        result1 <- knock14 "data/hightemp.txt" 4
+        answer1 <- exectrim "head -n4 data/hightemp.txt"
+        result1 `shouldBe` answer1
+        result2 <- knock14 "data/hightemp.txt" 5
+        answer2 <- exectrim "head -n5 data/hightemp.txt"
+        result2 `shouldBe` answer2

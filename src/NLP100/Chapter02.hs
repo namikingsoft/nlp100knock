@@ -71,3 +71,15 @@ knock13 path col1path col2path = do
   writeFile path mergeText
     where
       splitBreak = splitOn "\n"
+
+-- | 14. 先頭からN行を出力
+--
+-- 自然数Nをコマンドライン引数などの手段で受け取り，
+-- 入力のうち先頭のN行だけを表示せよ．確認にはheadコマンドを用いよ．
+--
+knock14 :: FilePath -> Int -> IO String
+knock14 path n = do
+  text <- readFile path
+  return $ init $ foldl (\x y -> x ++ y ++ "\n") "" $ take n $ splitBreak text
+    where
+      splitBreak = splitOn "\n"
